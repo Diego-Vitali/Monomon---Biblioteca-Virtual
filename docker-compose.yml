@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: biblioteca_api
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  mobile:
+    build:
+      context: ./monomon
+      dockerfile: Dockerfile
+    container_name: biblioteca_mobile
+    ports:
+      - "8081:8081"
+    environment:
+      # Essencial para o hot-reload funcionar dentro do container no Expo
+      - CHOKIDAR_USEPOLLING=true
+      # Ajuda o aplicativo no celular/emulador a encontrar o servidor Metro
+      - REACT_NATIVE_PACKAGER_HOSTNAME=localhost
+    volumes:
+      # Sincroniza seus arquivos locais com o container para atualizar em tempo real
+      - ./monomon:/app
+      # Evita sobrescrever a pasta node_modules de dentro do container
+      - /app/node_modules
+    depends_on:
+      - api
+    restart: unless-stopped
