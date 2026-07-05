@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONOMON - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo_ink: { DEFAULT: '#360568', 100: '#0b0114', 200: '#150229', 300: '#20033d', 400: '#2b0452', 500: '#360568', 600: '#5e08b3', 700: '#8618f4', 800: '#ae65f8', 900: '#d7b2fb' },
+                        indigo_velvet: { DEFAULT: '#5b2a86', 100: '#12091b', 200: '#251136', 300: '#371a51', 400: '#4a226d', 500: '#5b2a86', 600: '#7f3bba', 700: '#9f68cf', 800: '#bf9adf', 900: '#dfcdef' },
+                        glaucous: { DEFAULT: '#7785ac', 100: '#161a24', 200: '#2c3448', 300: '#424d6c', 400: '#586790', 500: '#7785ac', 600: '#929dbc', 700: '#adb6cd', 800: '#c9cede', 900: '#e4e7ee' },
+                        light_blue: { DEFAULT: '#9ac6c5', 100: '#192d2d', 200: '#335a59', 300: '#4c8786', 400: '#6dadac', 500: '#9ac6c5', 600: '#aed1d1', 700: '#c2dddc', 800: '#d7e8e8', 900: '#ebf4f3' },
+                        celadon: { DEFAULT: '#a5e6ba', 100: '#113e1f', 200: '#227b3e', 300: '#33b95d', 400: '#65d589', 500: '#a5e6ba', 600: '#b5ebc6', 700: '#c8f0d4', 800: '#daf5e3', 900: '#edfaf1' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-indigo_ink-100 flex justify-center items-center min-h-screen p-0 sm:p-4 text-glaucous-900 font-sans">
+
+    <div class="relative w-full max-w-[412px] h-[892px] bg-indigo_ink-300 rounded-[48px] shadow-2xl border-4 border-indigo_velvet-400 overflow-hidden flex flex-col">
+        
+        <div class="bg-indigo_ink-400 text-glaucous-800 px-6 pt-3 pb-2 flex justify-between items-center text-xs z-20">
+            <span class="font-bold">20:33</span>
+            <div class="w-24 h-4 bg-black rounded-full absolute left-1/2 transform -translate-x-1/2 top-2"></div>
+            <div class="flex items-center space-x-1">
+                <i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+
+        <header class="bg-gradient-to-b from-indigo_ink-400 to-indigo_ink-300 p-4 pt-3 border-b border-indigo_velvet-300">
+            <div class="flex justify-between items-center mb-1">
+                <div>
+                    <h1 class="text-xl font-black text-celadon tracking-wider">MONOMON</h1>
+                    <p class="text-[11px] text-glaucous-700 font-medium">Se inspire, relaxe e aprenda na Biblioteca</p>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] text-light_blue font-semibold">Olá, Kleber M.</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 space-y-5 no-scrollbar pb-24">
+            
+            <section class="space-y-2">
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="text-sm font-bold tracking-wide uppercase text-light_blue-700">Recomendados da Semana</h2>
+                    <div class="flex space-x-1">
+                        <span class="w-1.5 h-1.5 bg-celadon rounded-full"></span>
+                        <span class="w-1.5 h-1.5 bg-indigo_velvet-800 rounded-full"></span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between bg-indigo_ink-400/50 p-3 rounded-2xl border border-indigo_velvet-300/40">
+                    <button class="w-7 h-7 rounded-full bg-indigo_velvet flex items-center justify-center text-celadon"><i class="fas fa-chevron-left text-xs"></i></button>
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <div class="w-16 h-24 bg-gradient-to-br from-indigo_velvet-400 to-indigo_ink-500 rounded-lg opacity-60 transform scale-90 flex flex-col justify-end p-1 border border-indigo_velvet-700">
+                            <div class="h-2 w-full bg-glaucous-600 rounded mb-1"></div>
+                        </div>
+                        <a href="catalogo.html" class="w-24 h-32 bg-gradient-to-br from-indigo_velvet to-indigo_ink-100 rounded-xl shadow-xl flex flex-col justify-between p-2 border-2 border-celadon relative transform scale-105 cursor-pointer">
+                            <span class="absolute top-1 right-1 bg-celadon text-indigo_ink-100 text-[8px] font-extrabold px-1.5 py-0.5 rounded">SCI-FI</span>
+                            <i class="fas fa-space-shuttle text-indigo_velvet-800 text-3xl mt-4 self-center"></i>
+                            <div>
+                                <div class="h-2 w-full bg-celadon rounded mb-1"></div>
+                                <div class="h-1.5 w-1/2 bg-glaucous-700 rounded"></div>
+                            </div>
+                        </a>
+                        <div class="w-16 h-24 bg-gradient-to-br from-indigo_velvet-400 to-indigo_ink-500 rounded-lg opacity-60 transform scale-90 flex flex-col justify-end p-1 border border-indigo_velvet-700">
+                            <div class="h-2 w-full bg-glaucous-600 rounded mb-1"></div>
+                        </div>
+                    </div>
+                    <button class="w-7 h-7 rounded-full bg-indigo_velvet flex items-center justify-center text-celadon"><i class="fas fa-chevron-right text-xs"></i></button>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 gap-3">
+                <div class="bg-gradient-to-r from-light_blue-300 via-light_blue to-light_blue-600 p-4 rounded-2xl border border-light_blue-700 text-indigo_ink-100 shadow-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-3xl font-black text-indigo_ink">1</span>
+                            <span class="text-xs font-bold uppercase tracking-wide text-indigo_ink-400">Empréstimo Ativo</span>
+                        </div>
+                    </div>
+                    <button onclick="alert('Redirecionando para Registrar Devolução...')" class="w-full bg-indigo_ink text-light_blue-800 font-bold text-xs py-2.5 rounded-xl hover:bg-indigo_ink-500 transition shadow border border-indigo_ink-300 uppercase tracking-wider">
+                        <i class="fas fa-undo-alt mr-1.5"></i> Registrar Devolução
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 gap-2">
+                    <a href="catalogo.html" class="bg-gradient-to-r from-indigo_velvet to-indigo_velvet-600 p-3.5 rounded-xl border border-indigo_velvet-400 text-center text-xs font-bold text-celadon hover:opacity-90 transition block">
+                        <i class="fas fa-search mr-1.5"></i> Explorar Catálogo Completo
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="alert('Leve o livro físico para triagem')" class="bg-indigo_ink-400 border border-indigo_velvet-700 p-3 rounded-xl text-center text-xs font-semibold text-glaucous-800 hover:bg-indigo_ink-500 transition">
+                        <i class="fas fa-heart text-red-400 mr-1"></i> Doar Livro
+                    </button>
+                    <button onclick="alert('Caixa de sugestões aberta')" class="bg-indigo_ink-400 border border-indigo_velvet-700 p-3 rounded-xl text-center text-xs font-semibold text-glaucous-800 hover:bg-indigo_ink-500 transition">
+                        <i class="fas fa-comment-alt text-light_blue mr-1"></i> Sugestões
+                    </button>
+                </div>
+            </section>
+
+        </main>
+
+        <nav class="absolute bottom-0 left-0 right-0 bg-indigo_ink-400 border-t border-indigo_velvet-300/80 px-6 py-3 flex justify-between items-center z-20 rounded-b-[44px]">
+            <a href="index.html" class="flex flex-col items-center space-y-0.5 text-celadon">
+                <i class="fas fa-home text-lg"></i> <span class="text-[9px] font-bold">Início</span>
+            </a>
+            <a href="catalogo.html" class="flex flex-col items-center space-y-0.5 text-glaucous-700 hover:text-light_blue transition">
+                <i class="fas fa-book-reader text-lg"></i> <span class="text-[9px] font-bold">Catálogo</span>
+            </a>
+            <a href="autenticacao.html" class="flex flex-col items-center space-y-0.5 text-glaucous-700 hover:text-light_blue transition">
+                <i class="fas fa-user-circle text-lg"></i> <span class="text-[9px] font-bold">Conta</span>
+            </a>
+        </nav>
+    </div>
+</body>
+</html>

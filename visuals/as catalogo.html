@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONOMON - Catálogo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo_ink: { DEFAULT: '#360568', 100: '#0b0114', 200: '#150229', 300: '#20033d', 400: '#2b0452', 500: '#360568', 600: '#5e08b3', 700: '#8618f4', 800: '#ae65f8', 900: '#d7b2fb' },
+                        indigo_velvet: { DEFAULT: '#5b2a86', 100: '#12091b', 200: '#251136', 300: '#371a51', 400: '#4a226d', 500: '#5b2a86', 600: '#7f3bba', 700: '#9f68cf', 800: '#bf9adf', 900: '#dfcdef' },
+                        glaucous: { DEFAULT: '#7785ac', 100: '#161a24', 200: '#2c3448', 300: '#424d6c', 400: '#586790', 500: '#7785ac', 600: '#929dbc', 700: '#adb6cd', 800: '#c9cede', 900: '#e4e7ee' },
+                        light_blue: { DEFAULT: '#9ac6c5', 100: '#192d2d', 200: '#335a59', 300: '#4c8786', 400: '#6dadac', 500: '#9ac6c5', 600: '#aed1d1', 700: '#c2dddc', 800: '#d7e8e8', 900: '#ebf4f3' },
+                        celadon: { DEFAULT: '#a5e6ba', 100: '#113e1f', 200: '#227b3e', 300: '#33b95d', 400: '#65d589', 500: '#a5e6ba', 600: '#b5ebc6', 700: '#c8f0d4', 800: '#daf5e3', 900: '#edfaf1' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-indigo_ink-100 flex justify-center items-center min-h-screen p-0 sm:p-4 text-glaucous-900 font-sans">
+
+    <div class="relative w-full max-w-[412px] h-[892px] bg-indigo_ink-300 rounded-[48px] shadow-2xl border-4 border-indigo_velvet-400 overflow-hidden flex flex-col">
+        
+        <div class="bg-indigo_ink-400 text-glaucous-800 px-6 pt-3 pb-2 flex justify-between items-center text-xs z-20">
+            <span class="font-bold">20:33</span>
+            <div class="w-24 h-4 bg-black rounded-full absolute left-1/2 transform -translate-x-1/2 top-2"></div>
+            <div class="flex items-center space-x-1">
+                <i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+
+        <header class="bg-gradient-to-b from-indigo_ink-400 to-indigo_ink-300 p-4 pt-3 border-b border-indigo_velvet-300 flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-black text-celadon tracking-wider">ACERVO</h1>
+                <p class="text-[10px] text-glaucous-700">Selecione um livro para interagir</p>
+            </div>
+            <button onclick="openAdminPanel('cadastrar')" class="bg-indigo_velvet text-celadon text-[9px] font-black px-2.5 py-1.5 rounded-lg border border-indigo_velvet-700 shadow">
+                <i class="fas fa-plus-circle mr-1"></i>PAINEL ADMIN
+            </button>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 space-y-3 no-scrollbar pb-24">
+            
+            <div class="bg-indigo_ink-400 rounded-xl p-2 flex items-center space-x-2 border border-indigo_velvet-300">
+                <i class="fas fa-search text-glaucous-600 text-xs ml-1"></i>
+                <input type="text" placeholder="Buscar por título ou autor..." class="bg-transparent text-xs text-glaucous-900 placeholder-glaucous-600 focus:outline-none w-full">
+            </div>
+
+            <div class="space-y-2.5">
+                
+                <div onclick="openDetails('Livro Número Um', 'Autor Exemplo', 'Sci-Fi', 4, 15, 'Uma sinopse animada e curta para ilustrar os detalhes deste item.')" class="bg-indigo_ink-400/80 rounded-xl p-3 border border-indigo_velvet-300 flex space-x-3 items-center cursor-pointer hover:border-celadon transition">
+                    <div class="w-12 h-16 bg-indigo_velvet-300 rounded-lg flex-shrink-0 flex items-center justify-center border border-indigo_velvet-700 shadow">
+                        <i class="fas fa-book-open text-celadon text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-glaucous-900 truncate">Livro Número Um</h4>
+                        <p class="text-[9px] text-light_blue-500">Sci-Fi • Autor Exemplo</p>
+                        <div class="mt-1 flex items-center space-x-2 text-[9px]">
+                            <span class="text-celadon font-medium">Qtd: 4 exemplares</span>
+                            <span class="text-glaucous-700 font-medium">Prazo: Máx 15 dias</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-glaucous-700 text-xs pr-1"></i>
+                </div>
+
+                <div onclick="openDetails('Neuromancer', 'William Gibson', 'Cyberpunk', 2, 7, 'O clássico absoluto que definiu o gênero cyberpunk mundial.')" class="bg-indigo_ink-400/80 rounded-xl p-3 border border-indigo_velvet-300 flex space-x-3 items-center cursor-pointer hover:border-celadon transition">
+                    <div class="w-12 h-16 bg-indigo_velvet-300 rounded-lg flex-shrink-0 flex items-center justify-center border border-indigo_velvet-700 shadow">
+                        <i class="fas fa-book text-glaucous-600 text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-glaucous-900 truncate">Neuromancer</h4>
+                        <p class="text-[9px] text-light_blue-500">Cyberpunk • William Gibson</p>
+                        <div class="mt-1 flex items-center space-x-2 text-[9px]">
+                            <span class="text-celadon font-medium">Qtd: 2 exemplares</span>
+                            <span class="text-glaucous-700 font-medium">Prazo: Máx 7 dias</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-glaucous-700 text-xs pr-1"></i>
+                </div>
+
+            </div>
+        </main>
+
+        <div id="drawer-details" class="absolute bottom-14 left-0 right-0 bg-indigo_ink-400 border-t-2 border-indigo_velvet-600 rounded-t-[32px] p-5 space-y-3 shadow-2xl z-30 transform translate-y-full transition-transform duration-300">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span id="dt-genre" class="text-[8px] bg-indigo_velvet text-celadon font-bold px-2 py-0.5 rounded uppercase tracking-wide">GÊNERO</span>
+                    <h3 id="dt-title" class="text-sm font-black text-glaucous-900 mt-1">Título do Livro</h3>
+                    <p id="dt-author" class="text-[10px] text-light_blue">Autor do livro</p>
+                </div>
+                <button onclick="closeDetails()" class="w-6 h-6 rounded-full bg-indigo_ink-300 flex items-center justify-center text-glaucous-700"><i class="fas fa-times text-xs"></i></button>
+            </div>
+            <p id="dt-desc" class="text-[11px] text-glaucous-700 leading-tight">Sinopse estendida do livro selecionado.</p>
+            
+            <div class="bg-indigo_ink-300/50 rounded-xl p-2.5 flex justify-between text-[10px] text-glaucous-800 border border-indigo_velvet-300/30">
+                <span>Disponíveis: <b id="dt-qty" class="text-celadon">0</b></span>
+                <span>Tempo Limite: <b id="dt-max-days" class="text-light_blue">0 dias</b></span>
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('Reserva Efetuada com Sucesso!'); closeDetails();" class="space-y-2.5 pt-1">
+                <div class="flex items-center justify-between space-x-2">
+                    <label class="text-[10px] text-glaucous-600 font-bold uppercase shrink-0">Dias de reserva:</label>
+                    <input id="input-reserve-days" type="number" min="1" required class="w-full bg-indigo_ink-300 border border-indigo_velvet-300 rounded-lg p-2 text-xs text-center text-celadon font-bold focus:outline-none focus:border-celadon">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="submit" class="bg-celadon text-indigo_ink font-black text-xs py-2.5 rounded-xl uppercase tracking-wider shadow">Solicitar Reserva</button>
+                    <button type="button" onclick="triggerEditFromDetails()" class="bg-indigo_velvet text-celadon font-bold text-xs py-2.5 rounded-xl uppercase tracking-wider border border-indigo_velvet-600"><i class="fas fa-edit mr-1"></i>Editar Mod.</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="modal-admin" class="hidden fixed inset-0 bg-black/80 flex justify-center items-center p-4 z-50">
+            <div class="bg-indigo_ink-300 border border-indigo_velvet rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl">
+                <div class="flex justify-between items-center border-b border-indigo_velvet-300/40 pb-2">
+                    <h3 id="admin-title" class="text-xs font-black text-celadon uppercase tracking-wider">Cadastrar Novo Livro</h3>
+                    <button onclick="closeAdminPanel()" class="text-glaucous-600 hover:text-white"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <form onsubmit="event.preventDefault(); alert('Operação salva no acervo!'); closeAdminPanel();" class="space-y-3 text-xs">
+                    <div>
+                        <label class="text-[10px] text-light_blue font-bold block mb-1">Título do Livro</label>
+                        <input id="form-title" type="text" required placeholder="Ex: Sapiens" class="w-full bg-indigo_ink-400 border border-indigo_velvet-300 rounded-lg p-2 text-glaucous-900 focus:outline-none focus:border-celadon">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-light_blue font-bold block mb-1">Autor</label>
+                        <input id="form-author" type="text" required placeholder="Ex: Yuval Noah" class="w-full bg-indigo_ink-400 border border-indigo_velvet-300 rounded-lg p-2 text-glaucous-900 focus:outline-none focus:border-celadon">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-light_blue font-bold block mb-1">Gênero</label>
+                        <input id="form-genre" type="text" required placeholder="Ex: História / Ciência" class="w-full bg-indigo_ink-400 border border-indigo_velvet-300 rounded-lg p-2 text-glaucous-900 focus:outline-none focus:border-celadon">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[10px] text-light_blue font-bold block mb-1">Qtd Exemplares</label>
+                            <input id="form-qty" type="number" min="1" required placeholder="Disponíveis" class="w-full bg-indigo_ink-400 border border-indigo_velvet-300 rounded-lg p-2 text-glaucous-900 focus:outline-none focus:border-celadon">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-light_blue font-bold block mb-1">Máx Dias Empréstimo</label>
+                            <input id="form-max-days" type="number" min="1" required placeholder="Teto de dias" class="w-full bg-indigo_ink-400 border border-indigo_velvet-300 rounded-lg p-2 text-glaucous-900 focus:outline-none focus:border-celadon">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-celadon text-indigo_ink font-black py-2.5 rounded-xl uppercase tracking-wider shadow mt-2">
+                        Salvar no Sistema
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <nav class="absolute bottom-0 left-0 right-0 bg-indigo_ink-400 border-t border-indigo_velvet-300/80 px-6 py-3 flex justify-between items-center z-20 rounded-b-[44px]">
+            <a href="index.html" class="flex flex-col items-center space-y-0.5 text-glaucous-700 hover:text-light_blue transition">
+                <i class="fas fa-home text-lg"></i> <span class="text-[9px] font-bold">Início</span>
+            </a>
+            <a href="catalogo.html" class="flex flex-col items-center space-y-0.5 text-celadon">
+                <i class="fas fa-book-reader text-lg"></i> <span class="text-[9px] font-bold">Catálogo</span>
+            </a>
+            <a href="autenticacao.html" class="flex flex-col items-center space-y-0.5 text-glaucous-700 hover:text-light_blue transition">
+                <i class="fas fa-user-circle text-lg"></i> <span class="text-[9px] font-bold">Conta</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        let selectedBookCache = {};
+
+        function openDetails(title, author, genre, qty, maxDays, desc) {
+            selectedBookCache = { title, author, genre, qty, maxDays, desc };
+
+            document.getElementById('dt-title').innerText = title;
+            document.getElementById('dt-author').innerText = author;
+            document.getElementById('dt-genre').innerText = genre;
+            document.getElementById('dt-qty').innerText = qty;
+            document.getElementById('dt-max-days').innerText = maxDays + " dias";
+
+            const inputReserve = document.getElementById('input-reserve-days');
+            inputReserve.max = maxDays;
+            inputReserve.placeholder = `Máx ${maxDays}`;
+            inputReserve.value = '';
+
+            document.getElementById('drawer-details').classList.remove('translate-y-full');
+        }
+
+        function closeDetails() {
+            document.getElementById('drawer-details').classList.add('translate-y-full');
+        }
+
+        function openAdminPanel(mode) {
+            const titleEl = document.getElementById('admin-title');
+            if(mode === 'cadastrar') {
+                titleEl.innerText = "Cadastrar Novo Livro";
+                document.getElementById('form-title').value = '';
+                document.getElementById('form-author').value = '';
+                document.getElementById('form-genre').value = '';
+                document.getElementById('form-qty').value = '';
+                document.getElementById('form-max-days').value = '';
+            } else if(mode === 'editar') {
+                titleEl.innerText = "Editar Cadastro de Livro";
+                document.getElementById('form-title').value = selectedBookCache.title;
+                document.getElementById('form-author').value = selectedBookCache.author;
+                document.getElementById('form-genre').value = selectedBookCache.genre;
+                document.getElementById('form-qty').value = selectedBookCache.qty;
+                document.getElementById('form-max-days').value = selectedBookCache.maxDays;
+            }
+            document.getElementById('modal-admin').classList.remove('hidden');
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('modal-admin').classList.add('hidden');
+        }
+
+        function triggerEditFromDetails() {
+            closeDetails();
+            openAdminPanel('editar');
+        }
+    </script>
+</body>
+</html>
