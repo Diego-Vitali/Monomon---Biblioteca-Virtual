@@ -8,7 +8,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    private String tipo; // ADMIN ou LEITOR
+    private String tipo; // ADMIN ou USER
     private String nome;
     private String senha;
     private String email;

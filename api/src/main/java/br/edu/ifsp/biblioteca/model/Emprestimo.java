@@ -10,6 +10,7 @@ public class Emprestimo {
     private Integer id;
     
     private Integer livroId;
+    
     private Integer usuarioId;
     
     private LocalDateTime dataEmprestimo;

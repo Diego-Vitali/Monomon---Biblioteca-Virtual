@@ -10,7 +10,11 @@ public class Livro {
     private Integer id;
     
     private String nome;
-    private String autor;
+    
+    private Integer autorId;
+    
+    private Integer editoraId;
+    
     private Integer ano;
     
     @ElementCollection
@@ -26,8 +30,11 @@ public class Livro {
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public String getAutor() { return autor; }
-    public void setAutor(String autor) { this.autor = autor; }
+    public Integer getAutorId() { return autorId; }
+    public void setAutorId(Integer autorId) { this.autorId = autorId; }
+
+    public Integer getEditoraId() { return editoraId; }
+    public void setEditoraId(Integer editoraId) { this.editoraId = editoraId; }
 
     public Integer getAno() { return ano; }
     public void setAno(Integer ano) { this.ano = ano; }
