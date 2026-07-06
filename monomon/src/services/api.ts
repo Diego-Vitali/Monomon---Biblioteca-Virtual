@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
 
-// Para web usa localhost, para emulador Android usa 10.0.2.2.
-// (Para celular físico, seria necessário o IP da rede local)
-const BASE_URL = Platform.OS === 'web' ? 'http://localhost:8080' : 'http://10.0.2.2:8080';
+// Tenta pegar a variável de ambiente, caso exista. Se não, usa o comportamento padrão para emulador/web.
+// (Para celular físico, crie um arquivo .env na raiz do projeto com EXPO_PUBLIC_API_URL=http://<SEU_IP>:8080)
+const DEFAULT_URL = Platform.OS === 'web' ? 'http://localhost:8080' : 'http://10.0.2.2:8080';
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || DEFAULT_URL;
 
 export const api = axios.create({
     baseURL: BASE_URL, 
