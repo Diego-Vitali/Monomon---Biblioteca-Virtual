@@ -38,8 +38,8 @@ export const authStyles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 24,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(55, 26, 81, 0.4)', // indigo_velvet-300/40
-    backgroundColor: 'rgba(43, 4, 82, 0.3)', // indigo_ink-400/30
+    borderBottomColor: "rgba(55, 26, 81, 0.4)", // indigo_velvet-300/40
+    backgroundColor: "rgba(43, 4, 82, 0.3)", // indigo_ink-400/30
   },
   tab: {
     flex: 1,

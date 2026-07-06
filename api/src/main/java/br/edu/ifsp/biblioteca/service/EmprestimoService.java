@@ -42,7 +42,6 @@ public class EmprestimoService {
             throw new IllegalStateException("Livro sem estoque");
         }
 
-        // Verifica se o usuário já possui um empréstimo ativo para este livro
         List<Emprestimo> historico = emprestimoRepository.findAll();
         boolean jaPossui = historico.stream().anyMatch(e -> 
             e.getUsuarioId().equals(emprestimo.getUsuarioId()) && 

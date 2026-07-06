@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { 
-  Text, 
-  View, 
-  TextInput, 
-  TouchableOpacity, 
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
   KeyboardAvoidingView,
-  Platform, 
+  Platform,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
@@ -30,7 +30,7 @@ export default function LoginScreen({ onSwitchToRegister }: LoginScreenProps) {
       alert("Por favor, preencha todos os campos.");
       return;
     }
-    
+
     setLoading(true);
     try {
       const response = await api.post("/auth/login", { email, senha });
@@ -50,15 +50,17 @@ export default function LoginScreen({ onSwitchToRegister }: LoginScreenProps) {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <StatusBar style="light" />
-      
+
       <View style={styles.header}>
         <Text style={styles.title}>MONOMON</Text>
-        <Text style={styles.subtitle}>Gerencie suas leituras digitais e físicas</Text>
+        <Text style={styles.subtitle}>
+          Gerencie suas leituras digitais e físicas
+        </Text>
       </View>
 
       <View style={styles.tabsContainer}>

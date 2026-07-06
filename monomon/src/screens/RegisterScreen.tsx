@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { 
-  Text, 
-  View, 
-  TextInput, 
-  TouchableOpacity, 
-  KeyboardAvoidingView, 
-  Platform 
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { COLORS, authStyles as styles } from "./authStyles";
@@ -16,7 +16,9 @@ interface RegisterScreenProps {
   onSwitchToLogin: () => void;
 }
 
-export default function RegisterScreen({ onSwitchToLogin }: RegisterScreenProps) {
+export default function RegisterScreen({
+  onSwitchToLogin,
+}: RegisterScreenProps) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -42,15 +44,17 @@ export default function RegisterScreen({ onSwitchToLogin }: RegisterScreenProps)
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <StatusBar style="light" />
-      
+
       <View style={styles.header}>
         <Text style={styles.title}>MONOMON</Text>
-        <Text style={styles.subtitle}>Gerencie suas leituras digitais e físicas</Text>
+        <Text style={styles.subtitle}>
+          Gerencie suas leituras digitais e físicas
+        </Text>
       </View>
 
       <View style={styles.tabsContainer}>
@@ -58,7 +62,9 @@ export default function RegisterScreen({ onSwitchToLogin }: RegisterScreenProps)
           <Text style={styles.tabText}>ENTRAR</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.tab, styles.activeTab]}>
-          <Text style={[styles.tabText, styles.activeTabText]}>CRIAR CONTA</Text>
+          <Text style={[styles.tabText, styles.activeTabText]}>
+            CRIAR CONTA
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -99,7 +105,10 @@ export default function RegisterScreen({ onSwitchToLogin }: RegisterScreenProps)
           />
         </View>
 
-        <TouchableOpacity style={[styles.primaryButton, { marginTop: 16 }]} onPress={handleRegister}>
+        <TouchableOpacity
+          style={[styles.primaryButton, { marginTop: 16 }]}
+          onPress={handleRegister}
+        >
           <Text style={styles.primaryButtonText}>CRIAR CONTA</Text>
         </TouchableOpacity>
       </View>
