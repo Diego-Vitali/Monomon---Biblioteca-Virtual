@@ -65,4 +65,9 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @GetMapping("/usuarios")
+    public ResponseEntity<?> listarUsuarios() {
+        return ResponseEntity.ok(usuarioRepository.findAll());
+    }
 }

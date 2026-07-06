@@ -4,46 +4,30 @@ import { useRouter, usePathname } from "expo-router";
 import { COLORS } from "../screens/authStyles";
 import { FontAwesome } from '@expo/vector-icons'; // Assuming @expo/vector-icons is available in expo
 
+import { GlobalStore } from "../services/store";
+
 export default function BottomNav() {
   const router = useRouter();
   const pathname = usePathname();
+  const isAdmin = GlobalStore.user?.tipo === "ADMIN";
 
   return (
     <View style={styles.navContainer}>
-      <TouchableOpacity 
-        style={styles.navItem} 
-        onPress={() => router.replace("/home")}
-      >
-        <FontAwesome 
-          name="home" 
-          size={20} 
-          color={pathname === "/home" ? COLORS.primary : COLORS.textSecondary} 
-        />
+      <TouchableOpacity style={styles.navItem} onPress={() => router.replace("/home")}>
+        <FontAwesome name="home" size={20} color={pathname === "/home" ? COLORS.primary : COLORS.textSecondary} />
         <Text style={[styles.navText, pathname === "/home" && styles.activeNavText]}>Início</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.navItem} 
-        onPress={() => router.replace("/catalogo")}
-      >
-        <FontAwesome 
-          name="book" 
-          size={20} 
-          color={pathname === "/catalogo" ? COLORS.primary : COLORS.textSecondary} 
-        />
+      <TouchableOpacity style={styles.navItem} onPress={() => router.replace("/catalogo")}>
+        <FontAwesome name="book" size={20} color={pathname === "/catalogo" ? COLORS.primary : COLORS.textSecondary} />
         <Text style={[styles.navText, pathname === "/catalogo" && styles.activeNavText]}>Catálogo</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.navItem} 
-        onPress={() => router.replace("/conta")}
-      >
-        <FontAwesome 
-          name="user-circle" 
-          size={20} 
-          color={pathname === "/conta" ? COLORS.primary : COLORS.textSecondary} 
-        />
-        <Text style={[styles.navText, pathname === "/conta" && styles.activeNavText]}>Conta</Text>
+      <TouchableOpacity style={styles.navItem} onPress={() => router.replace("/conta")}>
+        <FontAwesome name={isAdmin ? "cog" : "user-circle"} size={20} color={pathname === "/conta" ? COLORS.primary : COLORS.textSecondary} />
+        <Text style={[styles.navText, pathname === "/conta" && styles.activeNavText]}>
+          {isAdmin ? "Gerenciamento" : "Conta"}
+        </Text>
       </TouchableOpacity>
     </View>
   );

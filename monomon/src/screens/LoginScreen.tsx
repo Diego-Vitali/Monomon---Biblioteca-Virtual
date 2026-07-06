@@ -42,7 +42,7 @@ export default function LoginScreen({ onSwitchToRegister }: LoginScreenProps) {
         router.replace("/home");
       }
     } catch (error: any) {
-      alert("Credenciais inválidas ou servidor offline.");
+      alert("Credenciais inválidas.");
       console.log(error);
     } finally {
       setLoading(false);

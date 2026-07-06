@@ -17,10 +17,11 @@ public class Livro {
     
     private Integer ano;
     
-    @ElementCollection
-    private List<String> generos;
+    private String generos;
     
     private Integer qntd;
+
+    private Integer emprestimosTotais = 0;
 
     public Livro() {}
 
@@ -39,9 +40,26 @@ public class Livro {
     public Integer getAno() { return ano; }
     public void setAno(Integer ano) { this.ano = ano; }
 
-    public List<String> getGeneros() { return generos; }
-    public void setGeneros(List<String> generos) { this.generos = generos; }
+    public String getGeneros() { return generos; }
+    public void setGeneros(String generos) { this.generos = generos; }
 
     public Integer getQntd() { return qntd; }
     public void setQntd(Integer qntd) { this.qntd = qntd; }
+
+    public Integer getEmprestimosTotais() { return emprestimosTotais; }
+    public void setEmprestimosTotais(Integer emprestimosTotais) { this.emprestimosTotais = emprestimosTotais; }
+
+    private Integer diasMaximos;
+    public Integer getDiasMaximos() { return diasMaximos; }
+    public void setDiasMaximos(Integer diasMaximos) { this.diasMaximos = diasMaximos; }
+
+    private String capaUrl;
+    public String getCapaUrl() { return capaUrl; }
+    public void setCapaUrl(String capaUrl) { this.capaUrl = capaUrl; }
+
+    @Transient
+    private String autorNome;
+
+    public String getAutorNome() { return autorNome; }
+    public void setAutorNome(String autorNome) { this.autorNome = autorNome; }
 }

@@ -41,4 +41,8 @@ public class Emprestimo {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    private Integer diasDesejados;
+    public Integer getDiasDesejados() { return diasDesejados; }
+    public void setDiasDesejados(Integer diasDesejados) { this.diasDesejados = diasDesejados; }
 }

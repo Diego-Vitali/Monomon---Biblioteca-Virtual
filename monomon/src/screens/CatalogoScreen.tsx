@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal, Alert, FlatList } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal, Alert, FlatList, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from "./authStyles";
@@ -22,6 +22,11 @@ export default function CatalogoScreen() {
   const [autorSelecionado, setAutorSelecionado] = useState<any>(null);
   const [genero, setGenero] = useState("");
   const [qtd, setQtd] = useState("");
+  const [diasMaximos, setDiasMaximos] = useState("");
+  const [capaUrl, setCapaUrl] = useState("");
+
+  // Reserve state
+  const [diasDesejados, setDiasDesejados] = useState("");
 
   useEffect(() => {
     carregarDados();
@@ -45,6 +50,7 @@ export default function CatalogoScreen() {
   
   const handleOpenDetails = (livro: any) => {
     setSelectedBook(livro);
+    setDiasDesejados(livro.diasMaximos ? livro.diasMaximos.toString() : "15");
     setDetailsVisible(true);
   };
   const handleCloseDetails = () => setDetailsVisible(false);
@@ -55,7 +61,6 @@ export default function CatalogoScreen() {
       setSelectedBook(livro);
       setTitulo(livro.nome || "");
       
-      // Encontra o autor pelo ID para preencher a busca
       const autorDoLivro = autores.find(a => a.id === livro.autorId);
       if (autorDoLivro) {
         setAutorSelecionado(autorDoLivro);
@@ -67,6 +72,8 @@ export default function CatalogoScreen() {
       
       setGenero(livro.generos || "");
       setQtd(livro.qntd ? livro.qntd.toString() : "");
+      setDiasMaximos(livro.diasMaximos ? livro.diasMaximos.toString() : "15");
+      setCapaUrl(livro.capaUrl || "");
     } else {
       setSelectedBook(null);
       setTitulo("");
@@ -74,6 +81,8 @@ export default function CatalogoScreen() {
       setAutorSelecionado(null);
       setGenero("");
       setQtd("");
+      setDiasMaximos("15");
+      setCapaUrl("");
     }
     setAdminVisible(true);
   };
@@ -81,8 +90,14 @@ export default function CatalogoScreen() {
   const handleCloseAdmin = () => setAdminVisible(false);
 
   const handleSaveBook = async () => {
-    if (!autorSelecionado) {
-      Alert.alert("Erro", "Selecione um autor da lista.");
+    if (!autorBusca || !autorBusca.trim()) {
+      Alert.alert("Erro", "Por favor, informe o nome do autor.");
+      return;
+    }
+    
+    const parsedQtd = Number(qtd);
+    if (isNaN(parsedQtd) || parsedQtd < 0 || String(qtd).trim() === "") {
+      Alert.alert("Erro", "A quantidade de estoque deve ser um número válido.");
       return;
     }
 
@@ -90,8 +105,10 @@ export default function CatalogoScreen() {
       const payload = {
         nome: titulo,
         generos: genero,
-        qntd: Number(qtd),
-        autorId: autorSelecionado.id, 
+        qntd: parsedQtd,
+        autorNome: autorBusca, 
+        diasMaximos: Number(diasMaximos),
+        capaUrl: capaUrl
       };
 
       if (selectedBook && selectedBook.id) {
@@ -109,6 +126,42 @@ export default function CatalogoScreen() {
     }
   };
 
+  const handleReserve = async () => {
+    if (!selectedBook) return;
+    if (selectedBook.qntd <= 0) {
+      Alert.alert("Erro", "Livro sem estoque no momento.");
+      return;
+    }
+    
+    let diasReq = parseInt(diasDesejados, 10);
+    if (isNaN(diasReq) || diasReq <= 0) {
+        Alert.alert("Erro", "Informe uma quantidade válida de dias.");
+        return;
+    }
+
+    try {
+      await api.post("/emprestimos", {
+        livroId: selectedBook.id,
+        usuarioId: GlobalStore.user.id,
+        diasDesejados: diasReq
+      });
+      Alert.alert("Sucesso", "Empréstimo solicitado! Aguarde aprovação.");
+      handleCloseDetails();
+      carregarDados(); 
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+         Alert.alert("Erro", "Livro sem estoque.");
+      } else if (error.response?.status === 403) {
+         Alert.alert("Negado", "Você já pediu este livro.");
+      } else if (error.response?.status === 400) {
+         Alert.alert("Negado", error.response.data || "Erro ao solicitar");
+      } else {
+         Alert.alert("Erro", "Não foi possível realizar o empréstimo.");
+      }
+      console.log(error);
+    }
+  };
+
   const handleDeleteBook = async () => {
     if (!selectedBook || !selectedBook.id) return;
     try {
@@ -121,7 +174,6 @@ export default function CatalogoScreen() {
     }
   };
 
-  // Filtra os autores baseado na digitação
   const autoresFiltrados = autorBusca && !autorSelecionado 
     ? autores.filter(a => a.nome.toLowerCase().includes(autorBusca.toLowerCase())) 
     : [];
@@ -159,16 +211,26 @@ export default function CatalogoScreen() {
           return (
             <TouchableOpacity key={livro.id} style={styles.bookListItem} onPress={() => handleOpenDetails(livro)}>
               <View style={styles.bookListIconContainer}>
-                <FontAwesome name="book" size={24} color={COLORS.primary} />
+                {livro.capaUrl ? (
+                    <Image source={{ uri: livro.capaUrl }} style={{ width: 40, height: 60, borderRadius: 4 }} />
+                ) : (
+                    <FontAwesome name="book" size={24} color={COLORS.primary} />
+                )}
               </View>
               <View style={styles.bookListInfo}>
                 <Text style={styles.bookListTitle} numberOfLines={1}>{livro.nome}</Text>
                 <Text style={styles.bookListSubtitle}>{livro.generos} • {autorNome}</Text>
                 <View style={styles.bookListMeta}>
-                  <Text style={styles.bookListQty}>Qtd: {livro.qntd} exemplares</Text>
+                  <Text style={styles.bookListQty}>Qtd: {livro.qntd} | Dias Máx: {livro.diasMaximos || 15}</Text>
                 </View>
               </View>
-              <FontAwesome name="chevron-right" size={14} color={COLORS.textSecondary} />
+              {userRole === "ADMIN" ? (
+                <TouchableOpacity onPress={() => handleOpenAdmin(livro)} style={{ padding: 8 }}>
+                  <FontAwesome name="pencil" size={16} color={COLORS.primary} />
+                </TouchableOpacity>
+              ) : (
+                <FontAwesome name="chevron-right" size={14} color={COLORS.textSecondary} />
+              )}
             </TouchableOpacity>
           );
         })}
@@ -197,21 +259,38 @@ export default function CatalogoScreen() {
             </TouchableOpacity>
           </View>
           
-          <Text style={styles.drawerDesc}>Sinopse: Livro do acervo.</Text>
-          
           <View style={styles.drawerStats}>
             <Text style={styles.drawerStatsText}>Disponíveis: <Text style={{ color: COLORS.primary }}>{selectedBook.qntd}</Text></Text>
+            <Text style={styles.drawerStatsText}>Max Dias: <Text style={{ color: COLORS.primary }}>{selectedBook.diasMaximos || 15}</Text></Text>
+          </View>
+          
+          <View style={{ marginVertical: 12 }}>
+             <Text style={{ color: COLORS.label, fontSize: 10, marginBottom: 4, fontWeight: 'bold' }}>QUANTOS DIAS DESEJA O LIVRO?</Text>
+             <TextInput 
+                style={{ backgroundColor: COLORS.background, color: COLORS.white, padding: 8, borderRadius: 6, borderWidth: 1, borderColor: COLORS.inputBorder }}
+                value={diasDesejados}
+                onChangeText={setDiasDesejados}
+                keyboardType="numeric"
+             />
           </View>
 
           <View style={styles.drawerActions}>
-            <TouchableOpacity style={styles.reserveButton} onPress={() => { Alert.alert("Sucesso", "Reserva solicitada!"); handleCloseDetails(); }}>
-              <Text style={styles.reserveButtonText}>SOLICITAR RESERVA</Text>
-            </TouchableOpacity>
-            
-            {userRole === "ADMIN" && (
-              <TouchableOpacity style={styles.editButton} onPress={() => handleOpenAdmin(selectedBook)}>
-                <FontAwesome name="edit" size={14} color={COLORS.primary} style={{ marginRight: 6 }} />
-                <Text style={styles.editButtonText}>EDITAR</Text>
+            {selectedBook.qntd <= 0 ? (
+              <TouchableOpacity style={[styles.reserveButton, { backgroundColor: COLORS.textSecondary }]} disabled={true}>
+                <Text style={styles.reserveButtonText}>LIVRO INDISPONÍVEL (SEM ESTOQUE)</Text>
+              </TouchableOpacity>
+            ) : parseInt(diasDesejados, 10) > (selectedBook.diasMaximos || 15) ? (
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: "#f87171", fontSize: 10, marginBottom: 8, fontWeight: "bold" }}>
+                  Você não pode pedir o livro por {diasDesejados} dias (Máximo de {selectedBook.diasMaximos || 15}).
+                </Text>
+                <TouchableOpacity style={[styles.reserveButton, { backgroundColor: COLORS.textSecondary }]} disabled={true}>
+                  <Text style={styles.reserveButtonText}>SOLICITAR EMPRÉSTIMO</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity style={styles.reserveButton} onPress={handleReserve}>
+                <Text style={styles.reserveButtonText}>SOLICITAR EMPRÉSTIMO</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -219,7 +298,7 @@ export default function CatalogoScreen() {
       )}
 
       {/* Admin Modal */}
-      <Modal visible={adminVisible} transparent animationType="fade">
+      <Modal visible={adminVisible} animationType="slide" transparent={true}>
         <View style={styles.modalOverlay}>
           <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center'}} style={{width:'100%'}}>
             <View style={styles.modalContent}>
@@ -238,19 +317,17 @@ export default function CatalogoScreen() {
               </View>
 
               <View style={[styles.inputGroup, { zIndex: 10 }]}>
-                <Text style={styles.label}>AUTOR (Buscar na base)</Text>
+                <Text style={styles.label}>NOME DO AUTOR</Text>
                 <TextInput 
                   style={styles.input} 
                   value={autorBusca} 
                   onChangeText={(text) => {
                     setAutorBusca(text);
-                    setAutorSelecionado(null); // Se o usuário voltar a digitar, limpa a seleção
+                    setAutorSelecionado(null);
                   }} 
                   placeholder="Ex: William Gibson" 
                   placeholderTextColor={COLORS.textSecondary} 
                 />
-                
-                {/* Search Suggestions */}
                 {autoresFiltrados.length > 0 && (
                   <View style={styles.suggestionsContainer}>
                     {autoresFiltrados.slice(0,4).map(autor => (
@@ -267,24 +344,32 @@ export default function CatalogoScreen() {
                     ))}
                   </View>
                 )}
-                {autorBusca.length > 0 && autoresFiltrados.length === 0 && !autorSelecionado && (
-                  <View style={styles.suggestionsContainer}>
-                    <Text style={styles.suggestionText}>Nenhum autor encontrado.</Text>
-                  </View>
-                )}
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>GÊNERO</Text>
-                <TextInput style={styles.input} value={genero} onChangeText={setGenero} placeholder="Ex: História" placeholderTextColor={COLORS.textSecondary} />
+                <Text style={styles.label}>GÊNEROS LITERÁRIOS</Text>
+                <TextInput style={styles.input} value={genero} onChangeText={setGenero} placeholder="Ex: Aventura, Sci-Fi" placeholderTextColor={COLORS.textSecondary} />
               </View>
+
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>QUANTIDADE</Text>
+                <Text style={styles.label}>QUANTIDADE EM ESTOQUE</Text>
                 <TextInput style={styles.input} value={qtd} onChangeText={setQtd} keyboardType="numeric" placeholder="Ex: 5" placeholderTextColor={COLORS.textSecondary} />
+              </View>
+              
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>MÁXIMO DE DIAS (EMPRÉSTIMO)</Text>
+                <TextInput style={styles.input} value={diasMaximos} onChangeText={setDiasMaximos} keyboardType="numeric" placeholder="Ex: 15" placeholderTextColor={COLORS.textSecondary} />
+              </View>
+              
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>URL DA CAPA (Opcional)</Text>
+                <TextInput style={styles.input} value={capaUrl} onChangeText={setCapaUrl} placeholder="Ex: https://...jpg" placeholderTextColor={COLORS.textSecondary} />
               </View>
 
               <TouchableOpacity style={styles.saveButton} onPress={handleSaveBook}>
-                <Text style={styles.saveButtonText}>SALVAR NO SISTEMA</Text>
+                <Text style={styles.saveButtonText}>
+                  {selectedBook?.id ? "SALVAR ALTERAÇÕES" : "CADASTRAR NO ACERVO"}
+                </Text>
               </TouchableOpacity>
 
               {selectedBook?.id && (
