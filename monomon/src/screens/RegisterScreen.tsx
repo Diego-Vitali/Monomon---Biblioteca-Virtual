@@ -10,6 +10,8 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { COLORS, authStyles as styles } from "./authStyles";
 
+import { api } from "../services/api";
+
 interface RegisterScreenProps {
   onSwitchToLogin: () => void;
 }
@@ -18,9 +20,25 @@ export default function RegisterScreen({ onSwitchToLogin }: RegisterScreenProps)
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
-    console.log("Registro", { nome, email, senha });
+  const handleRegister = async () => {
+    if (!nome || !email || !senha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await api.post("/auth/register", { nome, email, senha });
+      alert("Cadastro realizado com sucesso!");
+      onSwitchToLogin(); // Volta pra tela de login
+    } catch (error: any) {
+      alert("Erro ao realizar cadastro. E-mail já existe ou falha no servidor.");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -1,10 +1,12 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 
-// Configuração base da API
-// Em emuladores Android, geralmente usa-se 10.0.2.2.
-// Para dispositivos físicos ou iOS, use o IP da máquina na rede local.
+// Para web usa localhost, para emulador Android usa 10.0.2.2.
+// (Para celular físico, seria necessário o IP da rede local)
+const BASE_URL = Platform.OS === 'web' ? 'http://localhost:8080' : 'http://10.0.2.2:8080';
+
 export const api = axios.create({
-    baseURL: 'http://10.0.2.2:8080/api', 
+    baseURL: BASE_URL, 
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',

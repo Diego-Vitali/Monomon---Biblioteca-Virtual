@@ -4,11 +4,14 @@ import {
   View, 
   TextInput, 
   TouchableOpacity, 
-  KeyboardAvoidingView, 
-  Platform 
+  KeyboardAvoidingView,
+  Platform, 
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
 import { COLORS, authStyles as styles } from "./authStyles";
+
+import { api } from "../services/api";
 
 interface LoginScreenProps {
   onSwitchToRegister: () => void;
@@ -17,9 +20,29 @@ interface LoginScreenProps {
 export default function LoginScreen({ onSwitchToRegister }: LoginScreenProps) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    console.log("Login", { email, senha });
+  const router = useRouter();
+
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      const response = await api.post("/auth/login", { email, senha });
+      if (response.data && response.data.token) {
+        // Sucesso: Redireciona
+        router.replace("/home");
+      }
+    } catch (error: any) {
+      alert("Credenciais inválidas ou servidor offline.");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
