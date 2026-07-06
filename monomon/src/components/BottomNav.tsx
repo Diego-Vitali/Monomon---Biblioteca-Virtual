@@ -36,14 +36,14 @@ export default function BottomNav() {
 
       <TouchableOpacity 
         style={styles.navItem} 
-        onPress={() => router.replace("/")}
+        onPress={() => router.replace("/conta")}
       >
         <FontAwesome 
           name="user-circle" 
           size={20} 
-          color={pathname === "/" ? COLORS.primary : COLORS.textSecondary} 
+          color={pathname === "/conta" ? COLORS.primary : COLORS.textSecondary} 
         />
-        <Text style={[styles.navText, pathname === "/" && styles.activeNavText]}>Conta</Text>
+        <Text style={[styles.navText, pathname === "/conta" && styles.activeNavText]}>Conta</Text>
       </TouchableOpacity>
     </View>
   );

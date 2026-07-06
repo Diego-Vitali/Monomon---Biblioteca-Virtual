@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import { COLORS, authStyles as styles } from "./authStyles";
 
 import { api } from "../services/api";
+import { GlobalStore } from "../services/store";
 
 interface LoginScreenProps {
   onSwitchToRegister: () => void;
@@ -34,6 +35,9 @@ export default function LoginScreen({ onSwitchToRegister }: LoginScreenProps) {
     try {
       const response = await api.post("/auth/login", { email, senha });
       if (response.data && response.data.token) {
+        // Armazena em memória para não usar persistência local
+        GlobalStore.user = response.data.usuario;
+        GlobalStore.token = response.data.token;
         // Sucesso: Redireciona
         router.replace("/home");
       }

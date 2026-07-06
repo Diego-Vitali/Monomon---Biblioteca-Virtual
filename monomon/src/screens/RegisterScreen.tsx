@@ -34,7 +34,7 @@ export default function RegisterScreen({ onSwitchToLogin }: RegisterScreenProps)
       alert("Cadastro realizado com sucesso!");
       onSwitchToLogin(); // Volta pra tela de login
     } catch (error: any) {
-      alert("Erro ao realizar cadastro. E-mail já existe ou falha no servidor.");
+      alert("Erro ao realizar cadastro. E-mail já existe.");
       console.log(error);
     } finally {
       setLoading(false);
