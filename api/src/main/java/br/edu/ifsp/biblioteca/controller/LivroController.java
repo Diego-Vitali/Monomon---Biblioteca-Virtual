@@ -1,9 +1,7 @@
 package br.edu.ifsp.biblioteca.controller;
 
 import br.edu.ifsp.biblioteca.model.Livro;
-import br.edu.ifsp.biblioteca.model.Autor;
-import br.edu.ifsp.biblioteca.repository.LivroRepository;
-import br.edu.ifsp.biblioteca.repository.AutorRepository;
+import br.edu.ifsp.biblioteca.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,82 +15,47 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 public class LivroController {
 
-    @Autowired
-    private LivroRepository repository;
+    private final LivroService service;
 
     @Autowired
-    private AutorRepository autorRepository;
+    public LivroController(LivroService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<Livro>> listarTodos() {
-        return ResponseEntity.ok(repository.findAll());
+        return ResponseEntity.ok(service.listarTodos());
     }
     
     @GetMapping("/ranking/recomendados")
     public ResponseEntity<List<Livro>> listarRecomendados() {
-        return ResponseEntity.ok(repository.findTop5ByOrderByEmprestimosTotaisDesc());
+        return ResponseEntity.ok(service.listarRecomendados());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Livro> buscarPorId(@PathVariable Integer id) {
-        Optional<Livro> livro = repository.findById(id);
-        if (livro.isPresent()) {
-            return ResponseEntity.ok(livro.get());
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Optional<Livro> livro = service.buscarPorId(id);
+        return livro.map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
     
-    private void tratarAutor(Livro livro) {
-        if (livro.getAutorNome() != null && !livro.getAutorNome().trim().isEmpty()) {
-            Optional<Autor> autorOpt = autorRepository.findByNome(livro.getAutorNome());
-            if (autorOpt.isPresent()) {
-                livro.setAutorId(autorOpt.get().getId());
-            } else {
-                Autor novoAutor = new Autor();
-                novoAutor.setNome(livro.getAutorNome());
-                Autor salvo = autorRepository.save(novoAutor);
-                livro.setAutorId(salvo.getId());
-            }
-        }
-    }
-
     @PostMapping
     public ResponseEntity<Livro> criar(@RequestBody Livro livro) {
-        tratarAutor(livro);
-        if (livro.getEmprestimosTotais() == null) livro.setEmprestimosTotais(0);
-        Livro salvo = repository.save(livro);
+        Livro salvo = service.criar(livro);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Livro> atualizar(@PathVariable Integer id, @RequestBody Livro livroAtualizado) {
-        Optional<Livro> existente = repository.findById(id);
-        if (existente.isPresent()) {
-            Livro livro = existente.get();
-            tratarAutor(livroAtualizado);
-            
-            livro.setNome(livroAtualizado.getNome());
-            if (livroAtualizado.getAutorId() != null) {
-                livro.setAutorId(livroAtualizado.getAutorId());
-            }
-            livro.setEditoraId(livroAtualizado.getEditoraId());
-            livro.setAno(livroAtualizado.getAno());
-            livro.setGeneros(livroAtualizado.getGeneros());
-            livro.setQntd(livroAtualizado.getQntd());
-            livro.setDiasMaximos(livroAtualizado.getDiasMaximos());
-            livro.setCapaUrl(livroAtualizado.getCapaUrl());
-            
-            repository.save(livro);
-            return ResponseEntity.ok(livro);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Optional<Livro> atualizado = service.atualizar(id, livroAtualizado);
+        return atualizado.map(ResponseEntity::ok)
+                         .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Integer id) {
-        Optional<Livro> existente = repository.findById(id);
-        if (existente.isPresent()) {
-            repository.deleteById(id);
+        boolean excluido = service.excluir(id);
+        if (excluido) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
