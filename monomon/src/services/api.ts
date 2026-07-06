@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
+import { GlobalStore } from './store';
 
 // Tenta pegar a variável de ambiente, caso exista. Se não, usa o comportamento padrão para emulador/web.
 // (Para celular físico, crie um arquivo .env na raiz do projeto com EXPO_PUBLIC_API_URL=http://<SEU_IP>:8080)
@@ -12,6 +13,14 @@ export const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     }
+});
+
+// Interceptor para injetar o token de forma automática
+api.interceptors.request.use(async (config) => {
+    if (GlobalStore.token) {
+        config.headers.Authorization = `Bearer ${GlobalStore.token}`;
+    }
+    return config;
 });
 
 // Interceptor para adicionar o token JWT no futuro
