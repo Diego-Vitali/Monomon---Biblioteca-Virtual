@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { COLORS, authStyles as styles } from "./authStyles";
+import { useRouter } from "expo-router";
 
 import { api } from "../services/api";
+import { GlobalStore } from "../services/store";
 
 interface RegisterScreenProps {
   onSwitchToLogin: () => void;
@@ -24,6 +26,8 @@ export default function RegisterScreen({
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
+
   const handleRegister = async () => {
     if (!nome || !email || !senha) {
       alert("Por favor, preencha todos os campos.");
@@ -32,9 +36,12 @@ export default function RegisterScreen({
 
     setLoading(true);
     try {
-      await api.post("/auth/register", { nome, email, senha });
-      alert("Cadastro realizado com sucesso!");
-      onSwitchToLogin(); // Volta pra tela de login
+      const response = await api.post("/auth/register", { nome, email, senha });
+      if (response.data && response.data.token) {
+        GlobalStore.user = response.data.usuario;
+        GlobalStore.token = response.data.token;
+        router.replace("/home");
+      }
     } catch (error: any) {
       alert("Erro ao realizar cadastro. E-mail já existe.");
       console.log(error);

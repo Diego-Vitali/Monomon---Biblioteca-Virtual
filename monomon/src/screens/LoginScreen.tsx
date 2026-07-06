@@ -98,9 +98,6 @@ export default function LoginScreen({ onSwitchToRegister }: LoginScreenProps) {
           />
         </View>
 
-        <TouchableOpacity style={styles.forgotPassword}>
-          <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
-        </TouchableOpacity>
 
         <TouchableOpacity style={styles.primaryButton} onPress={handleLogin}>
           <Text style={styles.primaryButtonText}>CONECTAR CONTA</Text>
